@@ -6,7 +6,6 @@ y = height - 240;
 q1 = 20;
 q2 = 20;
 
-% 关节角度控制
 q1_text = uicontrol('Style', 'text', 'Position', [x, y, 120, 20], ...
     'String', 'Q1:', 'FontSize', 10);
 q1_slider = uicontrol('Style', 'slider', 'Position', [x + 120, y, 120, 20], ...
@@ -18,7 +17,6 @@ q2_text = uicontrol('Style', 'text', 'Position', [x, y, 120, 20], ...
 q2_slider = uicontrol('Style', 'slider', 'Position', [x+120, y, 120, 20], ...
     'Min', 0, 'Max', 180, 'Value', q2);
 
-% 基座位置控制
 y = y - 40;
 uicontrol('Style', 'text', 'Position', [x, y, 120, 20], ...
     'String', 'Base X:', 'FontSize', 10);
@@ -31,21 +29,18 @@ uicontrol('Style', 'text', 'Position', [x, y, 120, 20], ...
 base_y_slider = uicontrol('Style', 'slider', 'Position', [x+120, y, 120, 20], ...
     'Min', -50, 'Max', 50, 'Value', 0);
 
-% 缩放控制
 y = y - 40;
 uicontrol('Style', 'text', 'Position', [x, y, 120, 20], ...
     'String', 'scale:', 'FontSize', 10);
 scale_slider = uicontrol('Style', 'slider', 'Position', [x+120, y, 120, 20], ...
     'Min', 0.5, 'Max', 2, 'Value', 1);
 
-% 设置回调函数
 set(base_x_slider, 'Callback', @(src,evt) update_plot());
 set(base_y_slider, 'Callback', @(src,evt) update_plot());
 set(q1_slider, 'Callback', @(src,evt) update_plot());
 set(q2_slider, 'Callback', @(src,evt) update_plot());
 set(scale_slider, 'Callback', @(src,evt) update_plot());
     function update_plot()
-        % 获取当前滑块值
         pos_x = get(base_x_slider, 'Value');
         pos_y = get(base_y_slider, 'Value');
         q1_deg = get(q1_slider, 'Value');

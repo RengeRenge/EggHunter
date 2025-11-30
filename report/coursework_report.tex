@@ -1,0 +1,871 @@
+\documentclass[a4paper,11pt]{report}
+\usepackage{pgfgantt}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{booktabs}   % 如果想要美观横线
+\usepackage{array} % 扩展列定义
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+\usepackage[most]{tcolorbox}
+
+% ------------------------------
+% 页面与版式
+% ------------------------------
+\usepackage[a4paper,top=25mm,bottom=25mm,left=30mm,right=25mm]{geometry}
+\usepackage{setspace}        % 行距
+\usepackage{titlesec}        % 自定义章节标题
+\usepackage{fancyhdr}        % 页眉页脚
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+% ------------------------------
+% 设置引用
+% ------------------------------
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\renewcommand{\bibname}{References}
+% 重定义
+\renewcommand{\cite}[1]{\citep{#1}}
+
+% ------------------------------
+% 字体与间距设置（学术报告标准）
+% ------------------------------
+\usepackage{times}           % 正文字体 Times New Roman
+\renewcommand{\rmdefault}{ptm} % 主字体
+
+% LINE SPACING
+\newcommand{\linespacing}{1.5}
+\renewcommand{\baselinestretch}{\linespacing}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{lstlinebgrd}
+\lstset{
+    % 基础字体与颜色
+    basicstyle=\fontsize{9}{10}\selectfont\ttfamily\mdseries,
+    % backgroundcolor=\color{white},            % 明确的白色背景
+    % 关键字风格
+    keywordstyle=\color[RGB]{0,0,128}\bfseries,% 深蓝色，用于关键字 (如 `if`, `for`)
+    keywordstyle=[2]\color[RGB]{128,0,0}\bfseries,% 深红色，用于第二类关键字 (如 `int`, `class`)
+    % 注释风格
+    commentstyle=\color[RGB]{0,128,0},        % 柔和的绿色，用于注释
+    % 字符串风格
+    stringstyle=\color[RGB]{163,21,21},       % 深红色，用于字符串
+    % 数字风格
+    numbers=left,
+    numberstyle=\fontsize{8}{9}\selectfont\color{gray},
+    % 框架与布局
+    frame=single,                          % 使用带阴影的框，比单线框更精致
+    rulesepcolor=\color[RGB]{220,220,220},    % 非常浅的灰色阴影
+    rulecolor=\color[RGB]{200,200,200},       % 框架主色
+    % 行号与分隔
+    numbers=left,                             % 行号在左侧
+    numbersep=10pt,                            % 行号与代码的间距
+    % 换行与制表符
+    breaklines=true,                          % 自动换行
+    breakatwhitespace=true,                   % 只在空格处断行
+    tabsize=4,                                % 制表符等于4个空格
+    showstringspaces=false,                   % 不显示字符串中的空格
+    % 字体增强 (如果引擎支持)
+    upquote=true,                             % 使用直引号
+    columns=fixed,                            % 使用等宽字符对齐
+    % linebackgroundcolor={\color[RGB]{245,245,245}},
+}
+
+% ------------------------------
+% IEEE风格章节标题
+% ------------------------------
+\titleformat{\chapter}[hang]
+  {\normalfont\LARGE\bfseries\selectfont}  % 字体
+  {\thechapter.}{1em}{}         % 1. Introduction 风格
+\titlespacing*{\chapter}{0pt}{0pt}{1em}  % 章节上下间距
+
+\titleformat{\section}[hang]
+  {\normalfont\Large\bfseries\selectfont}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}[hang]
+  {\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+
+% ------------------------------
+% 页眉页脚设置
+% ------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% -------- 全局 fancy 样式 --------
+\fancyhf{} % 清空
+\lhead{874H1Z: Robot Design and Implementation}
+\rhead{5-bar planar parallel robot}
+\rfoot{\textbf{Page \thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% -------- plain 样式（覆盖默认的 chapter 首页）--------
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \lhead{874H1Z: Robot Design and Implementation}
+  \rhead{5-bar planar parallel robot}
+  \rfoot{\textbf{Page \thepage}}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0.4pt}
+}
+
+% ------------------------------
+% 文档开始
+% ------------------------------
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%
+% 封面
+%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    \includegraphics[width=5cm]{figures/sussex_logo.png}\par
+    \vspace{2cm}
+    
+    {\LARGE \bfseries 5-bar planar parallel robot }\\[1cm]
+    \vspace{0.5cm}
+    {\LARGE 874H1Z: Robot Design and Implementation }\\[2cm]
+    
+    \vfill
+    {\large Group Number: \textbf{2}}\\[1cm]
+    \begin{tabular}{l c c}
+      \textbf{Name} & \textbf{Candidate number} & \textbf{Role} \\
+      \hline
+      Di Li & 299089 & Group Leader \\
+      Yuting Shen & 299081 & Member \\
+      Dongbo Qu & 299078 & Member \\
+      Lujie Pan & 299100 & Member \\
+    \end{tabular}
+    
+    \vfill
+    {\large \today \par}
+    \end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%
+% 目录
+%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\pagenumbering{arabic}
+\tableofcontents
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%
+% 正文
+%%%%%%%%%%%%%%%%%%%%
+\chapter{Mechanism Design}
+\section{Structural Design}
+
+We designed a planar five-bar parallel mechanism consisting of two actuated joints at the base and two passive links, with the end-effector located at the intersection point of two passive links. A schematic representation of the mechanism is shown below.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{figures/structure.png}
+\caption{Schematic diagram of the five-bar mechanism.}
+\label{fig:structure}
+\end{figure}
+
+The main geometric parameters include:
+\begin{itemize}
+    \item Base spacing: $L_0$
+    \item Actuated link lengths: $L_1$, $L_3$
+    \item Passive link lengths: $L_2$, $L_4$
+    \item Joint A: $P_A$
+    \item Joint B: $P_B$
+    \item End-effector : P
+    \item $L_1$ angle: $\theta_1$, $L_3$ angle: $\theta_2$
+\end{itemize}
+
+\section{Workspace and Link-Length Selection}
+
+Multiple link-length combinations were simulated using MATLAB to evaluate whether the robot could reach the center of every cell in an egg tray. The final selected link parameters satisfy:
+
+\begin{itemize}
+    \item Full coverage of the egg-tray workspace.
+    \item Compact structure suitable for narrow environments.
+    \item Workspace center biased toward the right to avoid collision with the conveyor track.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\linewidth]{figures/workspace.jpg}
+\caption{Simulated reachable workspace used for link-length selection.}
+\end{figure}
+
+We finally choose the robot's configuration:
+\[
+  L_0=200mm, L_1=300mm, L_2=300mm, L_3=250mm, L_4=300mm
+\]
+
+
+\newpage
+
+\chapter{Forward Kinematics}
+% ============================================================
+
+\section{Geometric Formulation}
+Forward kinematics determines the position of the end-effector given joint angles $\theta_1$ and $\theta_2$.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figures/structure-forkin.png}
+  \caption{Schematic diagram of forward kinematics analysis.}
+  \label{fig:structure-forkin}
+\end{figure}
+The notation used in the forward kinematic derivation follows the link 
+definitions and joint labels shown in Figure~\ref{fig:structure-forkin}. Assume base $A_0$ is at $(0,0)$ and base $B_0$ is at $(L_0,0)$.  
+Given joint angles $\theta_1$ and $\theta_2$:
+
+\[
+P_A = 
+\begin{bmatrix}
+L_1\cos\theta_1 \\
+L_1\sin\theta_1
+\end{bmatrix}\\
+\\, 
+P_B = 
+\begin{bmatrix}
+L_0 + L_3\cos\theta_2 \\
+L_3\sin\theta_2
+\end{bmatrix}
+\]
+
+The end-effector point $P$ must satisfy:
+
+\[
+\|P - P_A\| = L_2,\quad \|P - P_B\| = L_4
+\]
+
+Thus, $P$ is the intersection of two circles centered at $P_A$ and $P_B$
+with radii $L_2$ and $L_4$, respectively.
+
+Let
+\[
+P_A = (x_A, y_A), \qquad P_B = (x_B, y_B).
+\]
+
+Define the distance between the two circle centers ($P_AP_B$) :
+\[
+d = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}.
+\]
+
+A valid physical solution requires:
+\[
+|L_2 - L_4| \le d \le L_2 + L_4.
+\]
+
+Define the unit vector from $P_A$ to $P_B$:
+\[
+\hat{e} =
+\frac{1}{d}
+\begin{bmatrix}
+x_B - x_A \\
+y_B - y_A
+\end{bmatrix}
+\]
+
+Using P to create the perpendicular $PP_0$ for $P_AP_B$, define the distance from $P_A$ to the $P_0$ is a.
+
+\[
+a = L_2 \cos(\alpha),\quad 
+\cos(\alpha) = \frac{L_2^2 + d^2 - L_4^2}{2dL_2} 
+\quad\Rightarrow\quad 
+a = \frac{L_2^2 - L_4^2 + d^2}{2d}
+\]
+
+Thus:
+\[
+P_0 =
+\begin{bmatrix}
+x_A \\ y_A
+\end{bmatrix}
++
+a \hat{e}.
+\]
+
+The length of $PP_0$ is:
+\[
+h = \sqrt{L_2^2 - a^2}
+\]
+
+
+
+Thus, the two possible intersection points are:
+\[
+P = P_0
+\pm
+h
+\begin{bmatrix}
+-\hat{e}_y \\
+\hat{e}_x
+\end{bmatrix}
+\]
+
+Written explicitly:
+
+\[
+P_x
+=
+x_A + a\frac{x_B - x_A}{d}
+\mp
+h\frac{y_B - y_A}{d},
+\]
+
+\[
+P_y
+=
+y_A + a\frac{y_B - y_A}{d}
+\pm
+h\frac{x_B - x_A}{d}
+\]
+
+
+The $\pm$ corresponds to elbow-up configuration or elbow-down configuration.
+
+\newpage
+\section{MATLAB Simulation}
+
+The forward kinematics simulation shown in this section is implemented using the MATLAB scripts listed in Appendix~\ref{lst:robot}--\ref{lst:main_fk}. 
+The \texttt{robot.m} defines the configuration of robot sunch as length of link. The core solver \texttt{ForwKin\_5link.m} computes the end-effector position from the actuated joint angles, while 
+\texttt{draw\_5link.m} and \texttt{draw\_workspace.m} are used to visualize the robot configuration and to render the reachable workspace. 
+Finally, the script \texttt{main\_forwKin.m} integrates these functions to generate the configuration plots presented in the forward kinematics results.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.77\linewidth]{figures/20-20.jpg}
+  \caption{Configuration at $\theta_1 = 20^\circ$, $\theta_2 = 20^\circ$.}
+  \end{figure}
+  
+  \begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.77\linewidth]{figures/20-30.jpg}
+  \caption{Configuration at $\theta_1 = 20^\circ$, $\theta_2 = 30^\circ$.}
+  \end{figure}
+  
+  \begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{figures/45-90.jpg}
+  \caption{Configuration at $\theta_1 = 45^\circ$, $\theta_2 = 90^\circ$.}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/90-120.jpg}
+    \caption{Configuration at $\theta_1 = 90^\circ$, $\theta_2 = 120^\circ$.}
+    \end{figure}
+
+\newpage
+\section{Issue of End-Effector Discontinuity}
+Because the mechanism is closed-loop and nonlinear, switching between elbow-up and elbow-down configurations causes an instantaneous jump in the end-effector position:
+    
+    \[
+    P_{\text{upper}} \neq P_{\text{lower}}
+    \]
+    
+    Such a configuration flip results in:
+    
+\begin{itemize}
+        \item Sudden reversal of passive-link angles.
+        \item Potential mechanical collision or singularity crossing.
+        \item Dangerous torques applied to physical servos.
+\end{itemize}
+    
+Therefore, a fixed branch (typically elbow-up) must be maintained to avoid
+kinematic discontinuities and mechanism flipping, only the elbow-up branch is used in this project throughout.
+
+% ============================================================
+\chapter{Inverse Kinematics}
+% ============================================================
+
+\section{Geometric Derivation}
+
+The inverse kinematics of the five-bar parallel manipulator determines the
+actuated joint angles $\theta_1$ and $\theta_2$ required to place the
+end-effector at a desired Cartesian location
+\[
+P = (x, y).
+\]
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figures/structure-invkin.png}
+  \caption{Schematic diagram of inverse kinematics analysis.}
+  \label{fig:structure-invkin}
+\end{figure}
+The notation used in the forward kinematic derivation follows the link 
+definitions and joint labels shown in Figure~\ref{fig:structure-invkin}.
+
+Since the mechanism consists of two symmetric two-link serial chains
+meeting at $P$, the inverse kinematics may be solved independently for
+each chain.
+
+\textbf{For Chain A:}
+
+Base $A_0$ is fixed at $(0,0)$. Given desired end–effector point $P$, the
+vector from $A_0$ to $P$ is
+\[
+\vec{v}_A =
+\begin{bmatrix}
+x \\ y
+\end{bmatrix},
+\qquad
+l = \|\vec{v}_A\| = \sqrt{x^2 + y^2}.
+\]
+
+The triangle formed by points $A_0$, $A_2$, and $P$ has side lengths
+$L_1$, $L_2$, and $l$.  
+Applying the law of cosines:
+
+\[
+\cos\alpha
+= \frac{L_1^2 + l^2 - L_2^2}{2 L_1 l},
+\qquad
+\alpha = \arccos\!\left( \frac{L_1^2 + l^2 - L_2^2}{2 L_1 l} \right).
+\]
+
+Angle $\theta_1$ is composed of the direction of $\vec{v}_A$ and the
+internal angle $\alpha$:
+
+\[
+\theta_1 = \mathrm{atan2}(y, x) \;\mp\; \alpha.
+\]
+
+Thus Chain A has two possible solutions:
+
+\[
+\theta_{1}^{(+)} = \mathrm{atan2}(y,x) - \alpha,
+\qquad
+\theta_{1}^{(-)} = \mathrm{atan2}(y,x) + \alpha,
+\]
+
+corresponding to elbow-up and elbow-down configurations.
+
+% -----------------------------------------------------
+\textbf{For Chain B:}
+% -----------------------------------------------------
+
+Base $B_0$ is located at $(L_0,0)$. The vector from $B_0$ to the target
+point $P$ is
+
+\[
+\vec{v}_B =
+\begin{bmatrix}
+x - L_0 \\
+y
+\end{bmatrix},
+\qquad
+m = \|\vec{v}_B\| = \sqrt{(x-L_0)^2 + y^2}.
+\]
+
+The triangle $B_0$--$B_2$--$P$ has sides $L_3$, $L_4$, and $m$.  
+By the law of cosines:
+
+\[
+\cos\beta
+= \frac{L_3^2 + m^2 - L_4^2}{2 L_3 m},
+\qquad
+\beta = \arccos\!\left( \frac{L_3^2 + m^2 - L_4^2}{2 L_3 m} \right).
+\]
+
+The direction of vector $\vec{v}_B$ is
+
+\[
+\phi = \mathrm{atan2}(y,\; x-L_0).
+\]
+
+Thus the joint angle at $B_0$ is:
+
+\[
+\theta_2 = \pi - \left( \phi \;\mp\; \beta \right).
+\]
+
+Explicitly:
+
+\[
+\theta_{2}^{(+)} = \pi - (\phi - \beta),
+\qquad
+\theta_{2}^{(-)} = \pi - (\phi + \beta).
+\]
+
+Again, ``$+$'' and ``$-$'' correspond to elbow-up and elbow-down.
+
+
+% -----------------------------------------------------
+\newpage
+\section{Feasible IK Sets}
+% -----------------------------------------------------
+
+Since Chain A has two possible solutions and Chain B has two possible
+solutions, the full manipulator admits up to four possible inverse
+kinematic configurations:
+
+\[
+(\theta_1,\theta_2)\in
+\left\{
+(\theta_1^{(+)},\theta_2^{(+)}),
+(\theta_1^{(+)},\theta_2^{(-)}),
+(\theta_1^{(-)},\theta_2^{(+)}),
+(\theta_1^{(-)},\theta_2^{(-)})
+\right\}.
+\]
+
+Only those satisfying the following constraints are physically valid:
+
+\begin{itemize}
+    \item Consistency with the selected branch (always elbow-up).
+    \item Angle greater than or equal to 0 and less than or equal to 180.
+\end{itemize}
+
+\section{Trajectory Tracking}
+\subsection*{Trajectory Tracking Implementation}
+
+The trajectory tracking shown in this section corresponds to the MATLAB scripts listed in Appendix~\ref{lst:ik}--\ref{lst:main_ik}. 
+The file \texttt{main\_invKin.m} generates the desired end-effector trajectories, including the circular and square paths used in the experiments and executes the full simulation pipeline to produce the plotted trajectory-following results. The script \texttt{InvKin\_trajectory.m} converts these Cartesian trajectory points into joint-space trajectories by evaluating the inverse kinematics at each point. 
+Finally, the function \texttt{draw\_trajectory.m} visualizes both the end-effector motion and the corresponding joint configurations, producing the trajectory plots shown in this section.
+
+\newpage
+\subsection{Circular trajectory (diameter: 2 cm)}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle-1.jpg}
+      \caption{Circular trajectory tracking example 1.}
+      \label{fig:circle1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle-2.jpg}
+      \caption{Circular trajectory tracking example 2.}
+      \label{fig:circle2}
+  \end{subfigure}
+  
+  \vspace{0.5cm} % 可选：调整上下两行之间的间距
+  
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle-3.jpg}
+      \caption{Circular trajectory tracking example 3.}
+      \label{fig:circle3}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle-4.jpg}
+      \caption{Circular trajectory tracking example 4.}
+      \label{fig:circle4}
+  \end{subfigure}
+  \caption{Circular trajectory tracking examples.}
+  \label{fig:all_circles}
+  \end{figure}
+
+\newpage
+\subsection{Square trajectory (side length: 2 cm)}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/rect-1.jpg}
+      \caption{Square trajectory tracking example 1.}
+      \label{fig:rect1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/rect-2.jpg}
+      \caption{Square trajectory tracking example 2.}
+      \label{fig:rect2}
+  \end{subfigure}
+  
+  \vspace{0.5cm} % 可选：调整上下两行之间的间距
+  
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/rect-3.jpg}
+      \caption{Square trajectory tracking example 3.}
+      \label{fig:rect3}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/rect-4.jpg}
+      \caption{Square trajectory tracking example 4.}
+      \label{fig:rect4}
+  \end{subfigure}
+  \caption{Square trajectory tracking examples.}
+  \label{fig:all_rects}
+  \end{figure}
+
+\newpage
+% ============================================================
+\chapter{3D CAD Modeling and Structural Analysis}
+% ============================================================
+
+\section{CAD Assembly}
+The full robot assembly was modeled using SolidWorks based on previously derived kinematic parameters, with the design comprehensively considering factors such as manufacturability, assembly sequence, motor selection, and functional requirements of the end-effector.
+
+\begin{itemize}
+  \item \textbf{Base:} A robust base was designed to mount the two drive motors (servo or stepper motors) while maintaining the specified base distance $L_0$.
+  
+  \item \textbf{Links:} All links ($L_1$, $L_2$, $L_3$, $L_4$) are designed using alloy steel. To ensure rigidity and prevent fracture, the main body of the links features an I-shaped cross-section.
+  
+  \item \textbf{Joint Connections:} Screws are used for axial positioning at the revolute joints.
+  
+  \item \textbf{Motor Connection:} The motors are directly coupled to the driving links ($L_1$ and $L_3$), ensuring zero-backlash power transmission.
+  
+  \item \textbf{End-Effector:} As required by the project specifications, the end-effector is designed as a universal gripper interface.
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.49\textwidth}
+      \centering
+      \includegraphics[width=0.54\linewidth]{figures/isometric-view.png}
+      \caption{Isometric view of the assembly.}
+      \label{fig:isometric}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.49\textwidth}
+      \centering
+      \includegraphics[width=0.54\linewidth]{figures/front-view.png}
+      \caption{Front view engineering drawing.}
+      \label{fig:front}
+  \end{subfigure}
+  
+  
+  \begin{subfigure}{0.49\textwidth}
+      \centering
+      \includegraphics[width=0.54\linewidth]{figures/top-view.png}
+      \caption{Top view engineering drawing.}
+      \label{fig:top}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.49\textwidth}
+      \centering
+      \includegraphics[width=0.54\linewidth]{figures/side-view.png}
+      \caption{Side view engineering drawing.}
+      \label{fig:side}
+  \end{subfigure}
+  \caption{Multi-view engineering drawings of the assembly.}
+  \label{fig:engineering-drawings}
+\end{figure}
+
+To clearly illustrate the core assembly relationships, we provide exploded views and close-up illustrations of the following key components:
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=0.9\linewidth]{figures/5link-exploded.png}
+      \caption{5-bar planar parallel robot}
+      \label{fig:5link-exploded}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=0.9\linewidth]{figures/end-effector-exploded.png}
+      \caption{End-effector}
+      \label{fig:end-effector-exploded}
+  \end{subfigure}
+  \caption{Exploded view diagrams showing component arrangement.}
+  \label{fig:exploded-views}
+\end{figure}
+
+\newpage
+\section{Key Connection Details}
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.49\textwidth}
+      \centering
+      \includegraphics[width=1\linewidth]{figures/detail-1.png}
+      \caption{Screw connection between the end-effector and the manipulator links.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.49\textwidth}
+      \centering
+      \includegraphics[width=1\linewidth]{figures/detail-2.png}
+      \caption{Link attachments to motor by 4 screws,another motor is in the same way.}
+  \end{subfigure}
+
+  \vspace{0.5em}
+
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/detail-3.png}
+    \caption{The connection of two links.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/detail-4.png}
+    \caption{Motor mounting.}
+  \end{subfigure}
+\end{figure}
+
+
+
+\newpage
+\section{Bill of Materials}
+
+The following table enumerates all components necessary for the complete robot assembly, classified into two categories: parts requiring machining and standard available components.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.40\textwidth}
+      \centering
+      \includegraphics[width=1\linewidth]{figures/bom.png}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.40\textwidth}
+      \centering
+      \includegraphics[width=1\linewidth]{figures/bom1.png}
+  \end{subfigure}
+
+  \vspace{0.5em}
+
+  \begin{subfigure}{0.40\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/bom2.png}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.40\textwidth}
+    \centering
+    \vspace{4cm}
+  \end{subfigure}
+
+  \caption{Bill of materials for the 5-bar planar parallel robot.}
+\end{figure}
+
+\newpage
+
+\section{Structural Static Analysis}
+To validate the mechanical strength of the robot design, we conducted static analysis under critical working conditions using the SolidWorks Simulation plugin.
+
+\subsection{Stress Analysis}
+The figure below shows the von Mises equivalent stress distribution under the most severe loading condition.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/stress.png}
+  \caption{Overall von Mises stress distribution, showing a peak value of 9.005 MPa localized at the L1/L3 base joints. This confirms the structural integrity of the assembly under the specified load.}
+\end{figure}
+
+\textbf{Result Interpretation:} As shown in the figure, the maximum stress occurs at the base connections with links L1 and L3, with a measured peak stress value of 9.005 MPa. The structure demonstrates sufficient strength under static loading conditions, preventing plastic deformation or structural failure.
+
+\newpage
+\subsection{Displacement Analysis}
+The figure below displays the total displacement distribution of the model under applied loads, reflecting the overall stiffness of the robot.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/displacement.png}
+  \caption{Total displacement field of the manipulator. The maximum deformation of 5.218 mm at the end-effector is small relative to the workspace, indicating sufficient overall stiffness for trajectory tracking tasks.}
+\end{figure}
+
+
+\textbf{Result Interpretation:} The maximum displacement occurs at the end-effector point P, with a value of 5.218 mm.
+
+\textbf{Stiffness Evaluation:} This displacement magnitude is relatively small compared to the robot's workspace dimensions, indicating good structural stiffness that meets the requirements for general-precision trajectory tracking applications.
+
+
+\section{Conclusion}
+Through systematic 3D CAD design, we have developed a rationally structured five-bar linkage robot model with clear assembly relationships that satisfies kinematic requirements. The Bill of Materials provides clear guidance for subsequent procurement and manufacturing processes. Most importantly, finite element structural analysis has verified the design's feasibility and reliability from a mechanical perspective. The analysis results demonstrate that under preset loads, both stress and deformation remain within acceptable limits, ensuring the robot's safety and performance during actual operation.
+
+
+%%%%%%%%%%%%%%%%%%%%
+% 参考文献
+%%%%%%%%%%%%%%%%%%%%
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%
+% 附录
+%%%%%%%%%%%%%%%%%%%%
+\appendix
+\addtocontents{toc}{\protect\contentsline{chapter}{\textbf{APPENDICES}}{}{}}
+
+\chapter{Code}
+
+% Configuration
+\section{Configuration}
+\lstinputlisting[
+    language=Matlab,
+    caption={robot.m},
+    label={lst:robot}
+]{../robot.m}
+
+% Forward Kinematics
+\section{Forward Kinematics}
+\lstinputlisting[
+    language=Matlab,
+    caption={ForwKin\_5link.m},
+    label={lst:fk}
+]{../ForwKin_5link.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={draw\_workspace.m},
+    label={lst:workspace}
+]{../draw_workspace.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={draw\_5link.m},
+    label={lst:drawlink}
+]{../draw_5link.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={tray\_key\_points.m},
+    label={lst:tray}
+]{../tray_key_points.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={main\_forwKin.m},
+    label={lst:main_fk}
+]{../main_forwKin.m}
+
+% Inverse Kinematics
+\section{Inverse Kinematics}
+\lstinputlisting[
+    language=Matlab,
+    caption={InvKin\_5link.m},
+    label={lst:ik}
+]{../InvKin_5link.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={InvKin\_trajectory.m},
+    label={lst:traj}
+]{../InvKin_trajectory.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={draw\_trajectory.m},
+    label={lst:draw_traj}
+]{../draw_trajectory.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={main\_invKin.m},
+    label={lst:main_ik}
+]{../main_invKin.m}
+
+\chapter{Group Member Contribution and Peer Review}
+\begin{center}
+  \begin{minipage}{\textwidth}
+      \centering
+      \includepdf[pages=-,height=\textheight]{figures/review.pdf}
+  \end{minipage}
+\end{center}
+
+\end{document}

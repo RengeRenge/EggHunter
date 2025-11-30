@@ -30,7 +30,7 @@ if d > (L2 + L4) || d < abs(L2 - L4)
     return;
 end
 
-% Circle–circle intersection geometry
+% Circle-circle intersection geometry
 a = (L2^2 - L4^2 + d^2) / (2*d);
 h = sqrt(L2^2 - a^2);
 
@@ -46,10 +46,10 @@ p1 = mid_point + h * perp_vector;
 p2 = mid_point - h * perp_vector;
 
 % Elbow-up selection using cross product
-% Vector from left active joint → right active joint
+% Vector from left active joint -> right active joint
 v = joint2_pos - joint1_pos;
 
-% Candidate vectors from midpoint → p1/p2
+% Candidate vectors from midpoint -> p1/p2
 w1 = p1 - mid_point;
 
 % 2D cross product z component

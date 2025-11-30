@@ -28,33 +28,26 @@ joint1_pos = joints(3, :);
 joint2_pos = joints(4, :);
 end_effector_pos = joints(5, :);
 
-% L0: 基座连杆
 set(L0_plot, 'XData', [base_left(1), base_right(1)], ...
     'YData', [base_left(2), base_right(2)]);
 
-% L1: 左侧主动杆
 set(L1_plot, 'XData', [base_left(1), joint1_pos(1)], ...
     'YData', [base_left(2), joint1_pos(2)]);
 
-% L3: 右侧主动杆
 set(L3_plot, 'XData', [base_right(1), joint2_pos(1)], ...
     'YData', [base_right(2), joint2_pos(2)]);
 
-% L2: 左侧从动杆
 set(L2_plot, 'XData', [joint1_pos(1), end_effector_pos(1)], ...
     'YData', [joint1_pos(2), end_effector_pos(2)]);
 
-% L4: 右侧从动杆
 set(L4_plot, 'XData', [joint2_pos(1), end_effector_pos(1)], ...
     'YData', [joint2_pos(2), end_effector_pos(2)]);
 
-% 更新关节点
 set(base_point, 'XData', [base_left(1), base_right(1)], ...
     'YData', [base_left(2), base_right(2)]);
 set(joint1, 'XData', joint1_pos(1), 'YData', joint1_pos(2));
 set(joint2, 'XData', joint2_pos(1), 'YData', joint2_pos(2));
 set(end_effector, 'XData', end_effector_pos(1), 'YData', end_effector_pos(2));
 
-% 刷新图形
 drawnow;
 end

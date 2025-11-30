@@ -32,21 +32,3 @@ if ~isempty(objs)
     delete(objs);
 end
 end
-
-
-% % config = [24, 36, 36, 30, 36];
-% config = [20, 30, 30, 25, 30];
-% 
-% % 任意目标点
-% px = -30.9195; py = 18.8903;
-% 
-% % 计算逆解
-% [q1, q2] = InvKin_5link(0, 0, [px, py], config, 1);
-% 
-% % 再用正解算回末端
-% joints = ForwKin_5link(0, 0, config, q1, q2, 1);
-% 
-% end_fk = joints(5,:);   % 你 ForwKin 中 end_effector_pos 是第四行
-% 
-% fprintf("期望末端: (%.4f, %.4f)\n", px, py);
-% fprintf("FK 返回末端: (%.4f, %.4f) q1 q2: (%.4f, %.4f)\n", end_fk(1), end_fk(2), q1, q2);

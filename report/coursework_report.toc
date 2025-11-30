@@ -1,0 +1,27 @@
+\contentsline {chapter}{\numberline {1}Mechanism Design}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Structural Design}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Workspace and Link-Length Selection}{3}{section.1.2}%
+\contentsline {chapter}{\numberline {2}Forward Kinematics}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Geometric Formulation}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}MATLAB Simulation}{6}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Issue of End-Effector Discontinuity}{8}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Inverse Kinematics}{9}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Geometric Derivation}{9}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Feasible IK Sets}{11}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Trajectory Tracking}{11}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Circular trajectory (diameter: 2 cm)}{12}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Square trajectory (side length: 2 cm)}{13}{subsection.3.3.2}%
+\contentsline {chapter}{\numberline {4}3D CAD Modeling and Structural Analysis}{14}{chapter.4}%
+\contentsline {section}{\numberline {4.1}CAD Assembly}{14}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Key Connection Details}{16}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Bill of Materials}{17}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Structural Static Analysis}{18}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Stress Analysis}{18}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Displacement Analysis}{19}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Conclusion}{19}{section.4.5}%
+\contentsline {chapter}{\textbf {APPENDICES}}{}{}
+\contentsline {chapter}{\numberline {A}Code}{20}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Configuration}{20}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Forward Kinematics}{21}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Inverse Kinematics}{29}{section.A.3}%
+\contentsline {chapter}{\numberline {B}Group Member Contribution and Peer Review}{34}{appendix.B}%
