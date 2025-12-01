@@ -31,7 +31,7 @@ if ~ok2
     q1=[]; q2=[]; return;
 end
 
-% --- Try the 4 possible combinations to find elbow-up ---
+% --- Try the 4 possible combinations to find valid solution ---
 candidates = [
     P1; Q1;
     P1; Q2;
@@ -40,8 +40,8 @@ candidates = [
 ];
 
 found = false;
-best_P = [];
-best_Q = [];
+best_q1 = [];
+best_q2 = [];
 
 for i = 1:4
     P = candidates(2*i-1,:);
@@ -59,34 +59,30 @@ for i = 1:4
     cross_val = v(1)*w(2) - v(2)*w(1);
 
     if cross_val > 0   % elbow up
-        best_P = P;
-        best_Q = Q;
-        found = true;
-        break;
+        % Compute joint angles for this candidate
+        candidate_q1 = atan2(P(2)-base_left(2),  P(1)-base_left(1));
+        candidate_q2 = atan2(Q(2)-base_right(2), Q(1)-base_right(1));
+        
+        % --- Angle limits (0~180 deg) ---
+        if candidate_q1 >= 0 && candidate_q1 <= pi && candidate_q2 >= 0 && candidate_q2 <= pi
+            best_q1 = candidate_q1;
+            best_q2 = candidate_q2;
+            found = true;
+            break;
+        end
     end
 end
 
 if ~found
-    q1=[]; q2=[]; return;
-end
-
-joint1 = best_P;
-joint2 = best_Q;
-
-% --- Compute joint angles ---
-q1 = atan2(joint1(2)-base_left(2),  joint1(1)-base_left(1));
-q2 = atan2(joint2(2)-base_right(2), joint2(1)-base_right(1));
-
-% --- Angle limits (0~180 deg) ---
-if q1 < 0 || q1 > pi || q2 < 0 || q2 > pi
-    q1=[]; q2=[];
+    q1=[]; q2=[]; 
     valid = false;
     return;
 end
 
+q1 = best_q1;
+q2 = best_q2;
 valid = true;
 end
-
 
 
 %% -------------------------- Circle intersection --------------------------

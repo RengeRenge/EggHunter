@@ -1,4 +1,4 @@
-function draw_workspace(ax, robot)
+function draw_workspace(ax, robot, bottom, find_tray)
 
 q1_range = linspace(0, pi, 50);  % 0-180
 q2_range = linspace(0, pi, 50);  % 0-180
@@ -24,10 +24,12 @@ if ~isempty(workspace_points)
     sc = scatter(ax, workspace_points(:,1), workspace_points(:,2), 10, ...
         [0.7 0.8 1.0], 'filled', 'MarkerEdgeAlpha', 0.3, ...
         'MarkerFaceAlpha', 0.4, 'Tag', 'workspace');
-    uistack(sc, 'bottom');
+    if bottom
+        uistack(sc, 'bottom');
+    end
 
     [p, found] = find_rectangle_position(workspace_points, robot);
-    if found
+    if found && find_tray
         plot_max_rectangle(ax, p);
     end
 end
@@ -37,11 +39,15 @@ if size(workspace_points, 1) > 2
         k = convhull(workspace_points(:,1), workspace_points(:,2));
         p = plot(ax, workspace_points(k,1), workspace_points(k,2), 'c-', ...
             'LineWidth', 1.5, 'Tag', 'workspace');
-        uistack(p, 'bottom');
+        if bottom
+            uistack(p, 'bottom');
+        end
     catch
         p = plot(ax, workspace_points(:,1), workspace_points(:,2), 'c-', ...
             'LineWidth', 1.5, 'Tag', 'workspace');
-        uistack(p, 'bottom');
+        if bottom
+            uistack(p, 'bottom');
+        end
     end
 end
 end

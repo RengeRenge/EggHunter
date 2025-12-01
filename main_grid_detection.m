@@ -26,7 +26,7 @@ function main_grid_detection()
             updateGraphics(ax, hImage, hRectangles, hCenters, hPaperRect, hTitle, ...
                           img, validCells, validCentroids, paperBoundingBox);
             
-            drawnow;
+            drawnow limitrate;
         end
         
     catch ME

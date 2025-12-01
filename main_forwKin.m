@@ -56,7 +56,7 @@ set(scale_slider, 'Callback', @(src,evt) update_plot());
         robot.base = [pos_x, pos_y];
         robot.scale = scale;
 
-        draw_workspace(ax, robot);
+        draw_workspace(ax, robot, true, true);
         draw_5link(robot, bot_plot, q1, q2);
     end
 update_plot();

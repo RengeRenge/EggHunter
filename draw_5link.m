@@ -49,5 +49,4 @@ set(joint1, 'XData', joint1_pos(1), 'YData', joint1_pos(2));
 set(joint2, 'XData', joint2_pos(1), 'YData', joint2_pos(2));
 set(end_effector, 'XData', end_effector_pos(1), 'YData', end_effector_pos(2));
 
-drawnow;
 end
