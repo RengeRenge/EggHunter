@@ -1,5 +1,5 @@
 % step
-% 0: noting
+% 0: nothing
 % 1: wating
 % 2: begining
 % 3: checking
