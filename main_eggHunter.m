@@ -225,8 +225,6 @@ for i = 1:centerSize
     set(hCenters(i), 'XData', center(1), 'YData', center(2), 'Color', centerColor, 'Visible', 'on');
 end
 
-
-% 更新标题
 set(hTitle, 'String', sprintf('%d compartments found, with %d eggs loaded and %d compartment outside the workspace.', cellCount, occupied, validCount));
 
 if task.step == 1
@@ -354,10 +352,10 @@ eggCells = {};
 cellIndex = 1;
 
 outerROIs = [
-    1,       1,         imgW,         py-1;            % 上
-    1,       py+ph,     imgW,         imgH-(py+ph);    % 下
-    1,       py,        px-1,         ph;              % 左
-    px+pw,   py,        imgW-(px+pw), ph               % 右
+    1,       1,         imgW,         py-1;
+    1,       py+ph,     imgW,         imgH-(py+ph);
+    1,       py,        px-1,         ph;
+    px+pw,   py,        imgW-(px+pw), ph
     ];
 
 for k = 1:4

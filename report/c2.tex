@@ -1,0 +1,1172 @@
+\documentclass[a4paper,11pt]{report}
+\usepackage{pgfgantt}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{booktabs}   % 如果想要美观横线
+\usepackage{array} % 扩展列定义
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage{subcaption}
+\usepackage[most]{tcolorbox}
+
+% ------------------------------
+% 页面与版式
+% ------------------------------
+\usepackage[a4paper,top=25mm,bottom=25mm,left=30mm,right=25mm]{geometry}
+\usepackage{setspace}        % 行距
+\usepackage{titlesec}        % 自定义章节标题
+\usepackage{fancyhdr}        % 页眉页脚
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+% ------------------------------
+% 设置引用
+% ------------------------------
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\renewcommand{\bibname}{References}
+% 重定义
+\renewcommand{\cite}[1]{\citep{#1}}
+
+% ------------------------------
+% 字体与间距设置（学术报告标准）
+% ------------------------------
+\usepackage{times}           % 正文字体 Times New Roman
+\renewcommand{\rmdefault}{ptm} % 主字体
+
+% LINE SPACING
+\newcommand{\linespacing}{1.5}
+\renewcommand{\baselinestretch}{\linespacing}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{lstlinebgrd}
+\lstset{
+    % 基础字体与颜色
+    basicstyle=\fontsize{9}{10}\selectfont\ttfamily\mdseries,
+    % backgroundcolor=\color{white},            % 明确的白色背景
+    % 关键字风格
+    keywordstyle=\color[RGB]{0,0,128}\bfseries,% 深蓝色，用于关键字 (如 `if`, `for`)
+    keywordstyle=[2]\color[RGB]{128,0,0}\bfseries,% 深红色，用于第二类关键字 (如 `int`, `class`)
+    % 注释风格
+    commentstyle=\color[RGB]{0,128,0},        % 柔和的绿色，用于注释
+    % 字符串风格
+    stringstyle=\color[RGB]{163,21,21},       % 深红色，用于字符串
+    % 数字风格
+    numbers=left,
+    numberstyle=\fontsize{8}{9}\selectfont\color{gray},
+    % 框架与布局
+    frame=single,                          % 使用带阴影的框，比单线框更精致
+    rulesepcolor=\color[RGB]{220,220,220},    % 非常浅的灰色阴影
+    rulecolor=\color[RGB]{200,200,200},       % 框架主色
+    % 行号与分隔
+    numbers=left,                             % 行号在左侧
+    numbersep=10pt,                            % 行号与代码的间距
+    % 换行与制表符
+    breaklines=true,                          % 自动换行
+    breakatwhitespace=true,                   % 只在空格处断行
+    tabsize=4,                                % 制表符等于4个空格
+    showstringspaces=false,                   % 不显示字符串中的空格
+    % 字体增强 (如果引擎支持)
+    upquote=true,                             % 使用直引号
+    columns=fixed,                            % 使用等宽字符对齐
+    % linebackgroundcolor={\color[RGB]{245,245,245}},
+}
+
+% ------------------------------
+% IEEE风格章节标题
+% ------------------------------
+\titleformat{\chapter}[hang]
+  {\normalfont\LARGE\bfseries\selectfont}  % 字体
+  {\thechapter.}{1em}{}         % 1. Introduction 风格
+\titlespacing*{\chapter}{0pt}{0pt}{1em}  % 章节上下间距
+
+\titleformat{\section}[hang]
+  {\normalfont\Large\bfseries\selectfont}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}[hang]
+  {\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+
+% ------------------------------
+% 页眉页脚设置
+% ------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% -------- 全局 fancy 样式 --------
+\fancyhf{} % 清空
+\lhead{874H1Z: Robot Design and Implementation}
+\rhead{5-bar planar parallel robot}
+\rfoot{\textbf{Page \thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% -------- plain 样式（覆盖默认的 chapter 首页）--------
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \lhead{874H1Z: Robot Design and Implementation}
+  \rhead{5-bar planar parallel robot}
+  \rfoot{\textbf{Page \thepage}}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0.4pt}
+}
+
+% ------------------------------
+% 文档开始
+% ------------------------------
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%
+% 封面
+%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    \includegraphics[width=5cm]{figures/sussex_logo.png}\par
+    \vspace{2cm}
+    
+    {\LARGE \bfseries 5-bar planar parallel robot }\\[1cm]
+    \vspace{0.5cm}
+    {\LARGE 874H1Z: Robot Design and Implementation }\\[2cm]
+    
+    \vfill
+    {\large Group Number: \textbf{2}}\\[1cm]
+    \begin{tabular}{l c c}
+      \textbf{Name} & \textbf{Candidate number} & \textbf{Role} \\
+      \hline
+      Di Li & 299089 & Group Leader \\
+      Yuting Shen & 299081 & Member \\
+      Dongbo Qu & 299078 & Member \\
+      Lujie Pan & 299100 & Member \\
+    \end{tabular}
+    
+    \vfill
+    {\large \today \par}
+    \end{titlepage}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+% 目录
+%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\pagenumbering{arabic}
+\tableofcontents
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%
+% 正文
+%%%%%%%%%%%%%%%%%%%%
+\chapter{Abstract}
+This report presents a design scheme for an automatic egg collection system in poultry houses based on a five-bar parallel robot\cite{JiangZhenhua2024ILHA}. The system is designed for the application scenario where eggs roll down to the collection area in tiered cage systems\cite{NakaguchiVictorMassaki2025Orrs}, aiming to replace traditional manual picking and achieve efficient and stable automated operations\cite{MengRonghua2025Sdao}. The core part adopts a planar five-bar parallel mechanism, installed on a horizontally moving platform, and is precisely driven by servo motors to ensure that the end effector can flexibly and accurately position and operate within a two-dimensional plane\cite{Cervantes-CulebroHector2021CDoa}. The end is equipped with an adaptive suction cup gripper, which can gently pick up and transfer eggs, effectively preventing breakage. 
+The geometric dimensions and kinematic model of the robotic arm have been optimized to meet the requirements of reachability and obstacle avoidance from the fixed egg-picking point to the designated egg tray. The system integrates a visual positioning module, which uses a camera to identify the position of the eggs and the orientation of the egg tray, guiding the robot to complete the picking and orderly placement tasks\cite{RasheedTahir2019ObTP}. The design comprehensively considers factors such as the stiffness of the mechanism, the smoothness of motion, and the anti-drop time to ensure the stability of the eggs during the transfer process. The overall system has strong environmental adaptability and can be deployed in typical poultry house passages to achieve rapid and reliable collection and arrangement of eggs, significantly improving the operational efficiency of the farm.
+
+We designed a planar five-bar parallel mechanism consisting of two actuated joints at the base and two passive links, with the end-effector located at the intersection point of two passive links\cite{ZhangXiaoqing2019TPaO}. A schematic representation of the mechanism is shown below.
+
+% ============================================================
+\chapter{Introduction}
+
+This report describes the design, implementation, and analysis of a vision-guided 5-bar planar parallel robot. The work integrates perception, kinematics, and task planning to complete an autonomous egg-loading task.
+
+Requires:
+\begin{itemize}
+    \item full understanding of the robot kinematics,
+    \item correct implementation of motion generation,
+    \item integration of perception with robot control,
+    \item execution and evaluation of two reference trajectories: a circle and a square.
+\end{itemize}
+
+For Group~2:
+\begin{itemize}
+    \item Circular trajectory: 2\,cm diameter
+    \item Square trajectory: 2\,cm side length
+\end{itemize}
+
+This report expands the Coursework~1 submission by including full system results and evaluation.
+
+% ============================================================
+
+\chapter{Robot Design}
+
+\section{5-Bar Robot Geometry}
+
+The robot consists of:
+\begin{itemize}
+    \item base link \(L_0\),
+    \item left and right actuated links \(L_1, L_3\),
+    \item passive links \(L_2, L_4\).
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=0.5\linewidth]{figures/structure.png}}
+\caption{5-bar robot schematic.}
+\end{figure}
+
+
+The IK returns joint angles:
+
+\[
+(\theta_1, \theta_2) = f^{-1}(x, y)
+\]
+
+subject to joint limits:
+
+\[
+0^\circ \le \theta_1, \theta_2 \le 180^\circ
+\]
+
+Only the elbow-up configuration is selected.
+
+\section{Workspace and Link-Length Selection}
+
+Multiple link-length combinations were simulated using MATLAB to evaluate whether the robot could reach the center of every cell in an egg tray. The final selected link parameters satisfy:
+
+\begin{itemize}
+    \item Full coverage of the egg-tray workspace.
+    \item Compact structure suitable for narrow environments.
+    \item Workspace center biased toward the right to avoid collision with the conveyor track.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\linewidth]{figures/workspace.jpg}
+\caption{Simulated reachable workspace used for link-length selection.}
+\end{figure}
+
+We finally choose the robot's configuration:
+\[
+  L_0=200mm, L_1=300mm, L_2=300mm, L_3=250mm, L_4=300mm
+\]
+
+\newpage
+\section{Trajectory Generation}
+
+\subsection{Circular trajectory (diameter: 2 cm)}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle-1.jpg}
+      \caption{Circular trajectory tracking example 1.}
+      \label{fig:circle1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle-2.jpg}
+      \caption{Circular trajectory tracking example 2.}
+      \label{fig:circle2}
+  \end{subfigure}
+  
+  \vspace{0.5cm} % 可选：调整上下两行之间的间距
+  
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle-3.jpg}
+      \caption{Circular trajectory tracking example 3.}
+      \label{fig:circle3}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/circle-4.jpg}
+      \caption{Circular trajectory tracking example 4.}
+      \label{fig:circle4}
+  \end{subfigure}
+  \caption{Circular trajectory tracking examples.}
+  \label{fig:all_circles}
+  \end{figure}
+
+\newpage
+\subsection{Square trajectory (side length: 2 cm)}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/rect-1.jpg}
+      \caption{Square trajectory tracking example 1.}
+      \label{fig:rect1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/rect-2.jpg}
+      \caption{Square trajectory tracking example 2.}
+      \label{fig:rect2}
+  \end{subfigure}
+  
+  \vspace{0.5cm} % 可选：调整上下两行之间的间距
+  
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/rect-3.jpg}
+      \caption{Square trajectory tracking example 3.}
+      \label{fig:rect3}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{figures/rect-4.jpg}
+      \caption{Square trajectory tracking example 4.}
+      \label{fig:rect4}
+  \end{subfigure}
+  \caption{Square trajectory tracking examples.}
+  \label{fig:all_rects}
+  \end{figure}
+\newpage
+
+% ============================================================
+
+\chapter{End-effector Design}
+\section{Design Philosophy \& Evolution}
+
+The primary challenge of this project is to achieve high-speed industrial egg collection while preventing damage to the fragile biological targets (eggs). Our design process underwent two phases of iteration:
+
+Phase 1 (Rejected): 
+Bio-inspired Pneumatic Gripper. 
+
+Initially, we considered a silicone-based soft gripper driven by air pressure. While safe for eggs, this solution was rejected due to:\cite{PiJie2021AOBF}
+
+(1)The need for bulky air compressors/valves; 
+
+(2) Slow response time (inflation/deflation); 
+
+(3) Poor durability in dusty poultry farm environments.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\linewidth]{figures/Bionic Flexible.png}
+  \caption{Bionic Flexible Gripper}
+\end{figure}
+
+Phase 2 (Selected): 
+Rigid-Soft Hybrid Mechanism. 
+
+The final design adopts a "Rigid Kinematics + Soft Interface" approach\cite{LiangJianan2024Amfg}. 
+A rigid mechanical linkage ensures precise positioning and fast response, while flexible TPU fingertips provide the necessary damping and friction for safe grasping.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{figures/Rigid Electric Gripper.png}
+\caption{Rigid Electric Gripper}
+\end{figure}
+
+\section{Mechanical Visualization}
+\subsection{Component Selection and Digital Prototyping}
+
+To guarantee system maintainability and manufacturability, the design exclusively incorporates standard Commercial Off-The-Shelf (COTS) actuators, with the exception of the mechanical gripper.  These components were selected based on a comprehensive evaluation of spatial integration and performance requirements. 
+
+High-fidelity 1:1 CAD reconstructions were generated from official manufacturer datasheets within SolidWorks. This digital prototyping process served to:
+
+\begin{itemize}
+    \item Validate geometric feasibility and assembly constraints;
+    \item Ensure precise dimensional accuracy for fit-check analysis;
+    \item Streamline the transition to the procurement phase.
+\end{itemize}
+
+The following subsections detail the finalized dimensional parameters, assembly architecture, and the kinematics of the gripping mechanism.
+
+% --- Part 1: Three-View Drawing (三视图) ---
+\subsection{Three-View Drawing}
+Figure\ref{three} illustrates the three-View of the end-effector. The design prioritizes compactness to minimize the moment of inertia on the 5-bar manipulator.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{figures/three_view.png}
+\caption{Three-View Drawing}
+\label{three}
+\end{figure}
+
+\newpage
+% --- Part 2: Exploded View (爆炸图) ---
+\subsection{Exploded Assembly View}
+The modularity of the design is demonstrated in the exploded view \ref{explosion}. The assembly is divided into three main sub-modules for ease of manufacturing and maintenance:
+\begin{enumerate}
+    \item \textbf{Actuation Module:} Contains the DMC50 cylinder and the NEMA 17 stepper motor.
+    \item \textbf{Transmission Module:} Includes the lead screw, guide nuts, and the symmetric linkage connecting rods.
+    \item \textbf{End-Tooling Module:} Comprises the rigid fingers and the detachable TPU flexible pads.
+\end{enumerate}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{figures/explosion.png}
+\caption{Exploded View}
+\label{explosion}
+\end{figure}
+\newpage
+% --- Part 3: Gripper Detail (抓夹图) ---
+\subsection{Gripping Mechanism \& Egg Interaction}
+Figure\ref{grap} provides a close-up view of the gripping unit in its closed state. The symmetric double-linkage mechanism transforms the vertical linear motion of the lead screw into the horizontal closing motion of the fingertips.
+\begin{itemize}
+    \item \textbf{Contact Geometry:} The TPU pads feature a 25mm curvature radius, increasing the contact surface area to distribute the gripping force ($F_{grip}$) evenly across the eggshell.
+    \item \textbf{Self-Locking Safety:} The detailed view highlights the lead screw pitch, which provides the self-locking capability necessary to prevent the egg from dropping during power loss.
+\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{figures/grap.png}
+   \caption{Gripping mechanism}
+   \label{grap}
+\end{figure}
+
+\section{Mechanical Structure}
+The end-effector assembly consists of two main subsystems: the Z-Axis Extension Unit and the Gripping Unit.
+
+\subsection{Z-Axis Extension Unit (Vertical Motion)}
+We utilized a \textbf{DMC50-L01 Electric Cylinder} integrated with a 400W servo motor. Unlike custom-built lead screw assemblies which may suffer from backlash or wobble, the industrial-grade DMC50 offers absolute vertical rigidity. The integrated guide rail design ensures that the high accelerations of the 5-bar parallel robot do not cause the end-effector to deflect or vibrate, which is critical for precise alignment with the egg tray.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\linewidth]{figures/z-lift_motor.png}
+   \caption{BDMC50-L01 Electric Cylinder}
+\end{figure}
+\newpage
+\subsection{Gripping Unit (Clamping Mechanism)}
+The clamping mechanism is a symmetric double-linkage system driven by a linear actuator.
+\begin{itemize}
+    \item \textbf{Mechanism:} The linkage converts the linear motion of the actuator into the rotational closing motion of the fingers.
+    \item \textbf{Self-Centering:} The symmetric design ensures that both fingers close synchronously, automatically centering the egg relative to the gripper axis. This reduces the complexity required of the vision positioning system.
+    \item \textbf{Fabrication (DFM):} The structural links are designed for additive manufacturing (3D printing using PETG/Nylon) or CNC Aluminum, assembled with standard M3 fasteners to facilitate maintenance.
+\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{figures/grip_motor.png}
+   \caption{NEMA 17 motor}
+\end{figure}
+
+\subsection{Flexible Interface (Egg Protection)}
+To protect the eggshell, the fingertips are fabricated from \textbf{TPU 95A (Thermoplastic Polyurethane)}.
+\begin{itemize}
+    \item \textbf{Geometry:} The fingertips feature a concave curvature with a 25mm radius, specifically designed to match the average profile of a chicken egg.
+    \item \textbf{Function:}
+    \begin{itemize}
+        \item \textit{Pressure Distribution:} Following the principle $P = F/A$, the curved contact area $A$ is maximized to reduce the local pressure $P$ exerted on the eggshell.
+        \item \textit{Shock Absorption:} The low elastic modulus of the TPU material absorbs the kinetic energy upon impact, preventing cracking.
+    \end{itemize}
+\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{figures/material.png}
+   \caption{Flexible Interface}
+\end{figure}
+
+\section{Operational Cycle and Control Logic}
+
+The system executes a four-stage sequential control loop to ensure safe biological handling, as illustrated in the system flowchart.
+
+\begin{enumerate}
+    \item \textbf{Detect \& Extend:} Upon target detection, the base motors position the arm, and the overhead motor drives the Z-axis electric cylinder to the target height.
+    \item \textbf{Adaptive Grasping:} The secondary clamping motor engages the linkage mechanism. The TPU tips conform to the eggshell geometry, while the lead screw mechanism provides a self-locking function to secure the payload without continuous power consumption.
+    \item \textbf{Stable Transport:} The end-effector retracts and traverses to the tray. The rigid structural design ensures vibration-free motion to prevent micro-cracks in the eggshell.
+    \item \textbf{Release \& Retract:} The gripper opens gently at the release coordinates, and the cylinder retracts rapidly to reset for the subsequent cycle.
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    % Placeholder for the operational flowchart
+    \includegraphics[width=0.6\linewidth]{figures/process.png}
+    \caption{Operational Cycle: Detect, Grasp, Transport, and Release.}
+    \label{fig:process_flow}
+\end{figure}
+
+\chapter{Actuator Selection and Dynamics Validation}
+
+Actuators were selected through a comparative analysis of industrial requirements regarding precision, speed, and safety. Table \ref{tab:motor_selection} details the selection rationale.
+
+\begin{table}[H]
+    \centering
+    \caption{Actuator Selection Matrix}
+    \label{tab:motor_selection}
+    \renewcommand{\arraystretch}{1.3}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+    \textbf{Axis} & \textbf{Selected Component} & \textbf{Alternative} & \textbf{Selection Rationale} \\ \hline
+    \textbf{Base (XY)} & 
+    \textbf{PK569-A (5-Phase Stepper)} & 
+    2-Phase Stepper & 
+    \begin{tabular}[c]{@{}l@{}}
+    \textbf{Advantage:} High resolution ($0.72^{\circ}$) and low vibration profile.\\
+    \textit{Justification:} Minimizes resonance risks to fragile payloads.
+    \end{tabular} \\ \hline
+    \textbf{Z-Axis} & 
+    \textbf{DMC50 (400W Servo)} & 
+    Custom Lead Screw & 
+    \begin{tabular}[c]{@{}l@{}}
+    \textbf{Advantage:} High integrated rigidity and acceleration capability.\\
+    \textit{Justification:} Necessary to resist lateral deflection during transport.
+    \end{tabular} \\ \hline
+    \textbf{Gripper} & 
+    \textbf{NEMA 17 (Linear Stepper)} & 
+    Pneumatic / Servo & 
+    \begin{tabular}[c]{@{}l@{}}
+    \textbf{Advantage:} Self-locking mechanics and simplified control infrastructure.\\
+    \textit{Justification:} Prevents payload drop during power loss events.
+    \end{tabular} \\ \hline
+    \end{tabular}%
+    }
+\end{table}
+
+\section{Dynamics and Load Analysis}
+
+\subsection{Z-Axis Dynamics}
+To validate the system's capacity for high-speed sorting, the dynamic load was calculated assuming a total moving mass $m_{total} \approx 1.0\,\text{kg}$ (gripper + egg + safety margin) and a vertical acceleration of $1G$ ($9.8\,\text{m/s}^2$).
+\begin{equation}
+    F_{req} = m_{total}(g + a) = 1.0 \times (9.8 + 9.8) = 19.6\,\text{N}
+\end{equation}
+Although the DMC50 (rated\text{>100N}) is overpowered for the static load, this specification is critical to maintain zero deflection under the high inertial forces of the robot's lateral movement.
+
+\subsection{Gripping Force Optimization}
+The grasping mechanism must secure the egg ($m=0.06\,\text{kg}$) against accelerations up to $3G$ without exceeding the shell's fracture threshold ($30\text{N} - 40\text{N}$).
+\begin{enumerate}
+    \item \textbf{Required Normal Force:} Assuming a friction coefficient $\mu \approx 0.5$, the required clamping force is:
+    \begin{equation}
+        F_n = \frac{m \cdot 4g}{\mu} = \frac{0.06 \cdot 39.2}{0.5} \approx 4.8\,\text{N}
+    \end{equation}
+    \item \textbf{Actuator Potential:} The NEMA 17 linear stepper ($0.4\,\text{Nm}$ torque, $2\,\text{mm}$ pitch, $50\%$ efficiency) theoretically generates:
+    \begin{equation}
+        F_{linear} = \frac{2 \pi \cdot \eta \cdot T}{p} \approx 628\,\text{N}
+    \end{equation}
+    \item \textbf{Control Strategy:} Since $F_{linear} \gg F_{fracture}$, mechanical force is regulated via current limiting (torque control) to maintain clamping force within the safe window ($5\text{N} - 10\text{N}$). The NEMA 17 size was selected primarily for the structural stability of the screw shaft rather than peak force capacity.
+\end{enumerate}
+
+\subsection{Base Actuator: 5-Phase Stepper Motor (PK569-A)}
+We validated the motor's capacity to handle the dynamic loads using the specific parameters of the PK569-A ($J_m = 1.2 \times 10^{-5} \text{kg}\cdot\text{m}^2$, $T_{peak} = 0.75 \text{Nm}$)[cite: 23, 27].
+
+\subsubsection{Torque Capabilities}
+The electromagnetic torque $T$ is defined by the torque constant $K_t$ and phase current $I$:
+\begin{equation}
+    T = K_t \cdot I \quad \text{where } K_t = 0.08\,\text{N}\cdot\text{m/A}
+\end{equation}
+The system provides a continuous torque $T_{cont} = 0.25\,\text{Nm}$ for sustained holding and a peak torque $T_{peak} = 0.75\,\text{Nm}$ for rapid acceleration phases[cite: 22, 23].
+
+\subsubsection{Dynamic Acceleration}
+Neglecting external loads, the theoretical maximum angular acceleration $\alpha_{max}$ is calculated as:
+\begin{equation}
+    \alpha_{max} = \frac{T_{peak}}{J_m} = \frac{0.75}{1.2 \times 10^{-5}} = 62,500\,\text{rad/s}^2
+\end{equation}
+This high acceleration capability confirms the motor's suitability for high-throughput rapid positioning tasks[cite: 53].
+
+\subsubsection{Thermal Constraints}
+To maintain the continuous torque rating, heat dissipation must manage the power loss ($P_{loss}$) due to winding resistance ($R \approx 0.5\,\Omega$):
+\begin{equation}
+    P_{loss} = I_{cont}^2 \cdot R = (3.125)^2 \times 0.5 \approx 4.88\,\text{W}
+\end{equation}
+Drive current is strictly limited to $3.125\,\text{A}$ for continuous duty to prevent thermal degradation[cite: 57, 64].
+
+\subsection{Workspace Torque Distribution (Heatmap Analysis)}
+To verify the PK569-A base actuators, a static torque distribution map was generated using MATLAB. The workspace was discretized into a $6 \times 5$ grid representing the egg tray. For each point, the Inverse Kinematics and Numerical Jacobian were computed to derive joint torques:
+\begin{equation}
+    \boldsymbol{\tau} = J^T(\boldsymbol{q}) \cdot \boldsymbol{F}_{gravity}
+\end{equation}
+Figure \ref{fig:torque_heatmap} illustrates the maximum torque demand. The analysis confirms that peak requirements (yellow zones) across the entire operational envelope remain well within the continuous torque rating of the selected motors.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{figures/Heatmap.png}
+    \caption{Static torque distribution heatmap across the workspace.}
+    \label{fig:torque_heatmap}
+\end{figure}
+
+
+\chapter{Egg Detection}
+\section{Overview}
+
+The egg detection subsystem is responsible for identifying the egg tray,
+extracting the grid of compartments, detecting the eggs located inside
+the tray, and locating any eggs outside the tray that need to be picked
+up. The process operates in real time on incoming camera frames and
+integrates closely with the kinematic model of the 5-bar parallel robot.
+
+The full pipeline consists of four major components:
+\begin{enumerate}
+    \item Egg tray detection
+    \item Grid extraction and compartment localisation
+    \item In-tray egg detection
+    \item Free-space egg detection (eggs outside the tray area)
+\end{enumerate}
+
+Each detection stage produces structured outputs that are subsequently
+used by the robotic task planner.
+
+\section{Egg Tray Detection}
+
+To enable real-time performance, incoming camera frames are first
+downscaled. The tray is assumed to be the largest rectangular region
+visible in the scene, and is extracted using image thresholding and
+connected-component analysis. The resulting bounding box defines the
+region of interest for subsequent grid and compartment analysis.
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/im_tray_1.jpg}
+        \caption{Original Image}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/im_tray_2.jpg}
+        \caption{Greyscale Image}
+    \end{subfigure}
+    
+    \vspace{0.5cm} % 可选：调整上下两行之间的间距
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/im_tray_3.jpg}
+        \caption{Binarization}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/im_tray_4.jpg}
+        \caption{Extract the Largest Region}
+    \end{subfigure}
+\caption{Extract Tray Region}
+\end{figure}
+
+\section{Compartment Grid Extraction}
+
+Within the tray region, adaptive thresholding is applied to improve the
+contrast of the grid lines. Horizontal and vertical structural patterns
+are isolated using morphological operations, producing a binary image
+that highlights the tray grid.
+
+The intersection of horizontal and vertical structural elements forms a
+set of connected regions corresponding to the individual tray
+compartments. Each region provides:
+\begin{itemize}
+    \item the estimated cell centre,
+    \item the approximate cell boundary,
+    \item a validity flag indicating whether the cell lies inside the workspace of the robot.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/im_tray_6.jpg}
+    \caption{Adaptive Binarization \& Open Operation}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/im_tray_8.jpg}
+    \caption{Clear Border \& Erosion}
+\end{subfigure}
+
+\hfill
+\vspace{0.5cm}
+
+\begin{subfigure}{0.8\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/im_tray_9.jpg}
+    \caption{Detection Result}
+\end{subfigure}
+\caption{Extract Tray Grid}
+\end{figure}
+
+The workspace validity is determined using the robot’s inverse
+kinematics solver, ensuring that only reachable tray compartments are
+considered in the pick-and-place task.
+
+\newpage
+
+\section{In-Tray Egg Detection}
+
+For each valid tray compartment, the region is examined to determine
+whether an egg is already present. The egg shells exhibit characteristic
+colour properties, and thus colour-based segmentation is used. The
+segmented region is processed through morphological filtering to
+eliminate noise.
+
+A circular-shape detection step is then applied to identify the
+egg-like structure. When an egg is detected, its centre and radius are
+computed and mapped back into the full-resolution coordinate frame.
+Finally, its reachability is verified using the robot's inverse
+kinematics model.
+
+\section{Detection of Eggs Outside the Tray}
+
+Eggs that have not yet been placed within the tray must also be
+detected. The image area outside the tray bounding box is divided into
+four regions—top, bottom, left, and right—and each region is scanned
+using the same segmentation and shape-identification strategy as used
+for the in-tray detection.
+
+\section{Eggs Detection Process}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/d_egg_1.jpg}
+        \caption{Original Image}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/d_egg_3.jpg}
+        \caption{Binarization Based on HSV Threshold}
+    \end{subfigure}
+    
+    \vspace{0.5cm} % 可选：调整上下两行之间的间距
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/d_egg_4.jpg}
+        \caption{Closed Operation}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/d_egg_5-cut.jpg}
+        \caption{Morphological Detection for Circular Shape}
+    \end{subfigure}
+\caption{Image Process for Egg Detection in MATLAB}
+\end{figure}
+
+\section{Real-Time UI Feedback}
+
+The detection results are visualised in real time by overlaying
+annotations on the camera feed. The system displays:
+\begin{itemize}
+    \item green circles for valid detected eggs,
+    \item red circles for eggs outside the workspace,
+    \item yellow markers for empty but reachable tray cells,
+    \item red markers for unreachable compartments.
+\end{itemize}
+
+A title and subtitle indicate the current detection status and task
+stage, allowing the user to follow the robot's reasoning and actions
+intuitively.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.99\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/multiple-frames-2-cut.jpg}
+    \end{subfigure}
+\caption{Robot UI Display in MATLAB}
+\end{figure}
+
+\chapter{Egg Collection Programming}
+
+\section{System Architecture}
+
+The egg collection behaviour is governed by a task manager implemented
+as a finite-state machine. The system converts perception outputs into
+robot actions, selects suitable targets, and performs a sequence of
+motions to pick and place eggs into the tray.
+
+The control framework consists of:
+\begin{enumerate}
+    \item trajectory generation in joint space,
+    \item inverse kinematics evaluation,
+    \item servo actuation via an Arduino controller,
+    \item task monitoring and verification.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/sys-arh.png}
+    \end{subfigure}
+\caption{System architecture diagram}
+\end{figure}
+
+\section{Task State Machine}
+
+The egg collection procedure is divided into four stages:
+\begin{description}
+    \item[Step 0: Idle] The system waits until a valid egg is detected outside the tray.
+    \item[Step 1: Target Selection] The nearest reachable egg and the nearest empty tray compartment are paired. If the target is lost during in 5-second, the current task is automatically canceled. 
+    \item[Step 2: Pick-and-Place Execution] The robot follows a planned trajectory from its current configuration to the egg, performs a grasp motion, and then moves to the target compartment.
+    \item[Step 3: Verification] The system verifies whether the egg is correctly placed, and if so, returns to Step~0.
+\end{description}
+
+This structure ensures that the system behaves deterministically and
+recovers gracefully from failures such as unreachable targets or
+erroneous detections.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/task-state.png}
+    \end{subfigure}
+\caption{Control flow diagram}
+\end{figure}
+
+\section{Trajectory Generation and Kinematic Control}
+
+For every target point, the inverse kinematics solver is used to compute
+the corresponding joint angles. Only the elbow-up configuration is
+retained, preventing kinematic flipping and ensuring continuity of
+motion.
+
+Trajectory generation is performed by interpolating between joint
+configurations. This creates smooth and collision-free motion as the
+robot transitions between:
+\begin{enumerate}
+    \item an initial safe configuration,
+    \item the pick location,
+    \item a transfer pose,
+    \item the placement location,
+    \item a return pose.
+\end{enumerate}
+
+Each key configuration is visualised in real time, allowing
+instantaneous feedback on the robot’s motion.
+
+\section{Servo Actuation via Arduino}
+
+The robot is driven using two servo motors controlled by an Arduino
+microcontroller. MATLAB communicates with the Arduino over a serial
+connection, sending target joint angles that are translated into PWM
+signals by the microcontroller.
+
+This design provides:
+\begin{itemize}
+    \item low-latency control,
+    \item fine-grained angular resolution,
+    \item safe motion limits consistent with the robot’s physical constraints.
+\end{itemize}
+
+\section{Placement Verification}
+
+After completing the motion sequence, the system uses the camera input
+to verify whether the egg is successfully located within the target
+compartment. The verification step compares the detected egg’s centre
+with the geometric centre of the cell. If the error is within tolerance,
+the system registers a successful placement.
+
+If the verification fails, the system transitions to a recovery action
+or retries the operation depending on the failure type.
+
+\section{System Integration}
+
+The perception system, kinematic solver, trajectory planner, and servo
+controller operate together within MATLAB’s real-time loop. This unified
+framework enables:
+\begin{itemize}
+    \item closed-loop visual feedback,
+    \item autonomous target selection,
+    \item smooth joint-space control,
+    \item robust task execution.
+\end{itemize}
+
+The final system is capable of autonomously identifying eggs, selecting
+valid storage cells, and placing eggs into the tray with high accuracy.
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/egg-hunter-process.png}
+    \end{subfigure}
+\caption{Control flow diagram}
+\end{figure}
+
+% uuuuuuuuuuuuuuuuuu
+
+% ============================================================
+\chapter{Results}
+
+\section{Overview}
+
+This section presents the experimental results of the complete egg
+detection and collection system. The evaluation covers three major
+components:
+
+\begin{enumerate}
+    \item Performance of the tray and egg detection module.
+    \item Execution of the egg pick-and-place task using the 5-bar robot.
+    \item Tracking and accuracy of the robot trajectory during motion.
+\end{enumerate}
+
+All results shown here were generated using the integrated MATLAB–Arduino 
+framework described in the previous sections.
+
+\section{Tray Detection Results}
+
+The first experiment validates the ability of the system to correctly 
+identify the egg tray and extract the compartment grid. The algorithm 
+successfully segmented the grid lines and detected each compartment in 
+real time.
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.9\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/im_tray_9.jpg}
+    \end{subfigure}
+\caption{Detected egg tray and extracted grid of compartments.}
+\end{figure}
+
+The system was able to differentiate between reachable and unreachable 
+compartments by interfacing with the inverse kinematics solver, ensuring 
+that only cells inside the robot workspace were considered valid targets.
+
+\section{Egg Detection Results}
+
+The vision module reliably detected eggs both inside and outside the tray. 
+Eggs outside the tray were identified based on colour and circular-shape 
+features, while eggs inside the tray were detected cell-by-cell.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.9\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/egg-result-all.jpg}
+    \end{subfigure}
+\caption{Detected eggs inside and outside the tray.}
+\end{figure}
+
+The system correctly classified eggs as:
+\begin{itemize}
+    \item \textbf{reachable} (green marker),
+    \item \textbf{unreachable} (red marker),
+    \item or \textbf{already inside a tray cell}.
+\end{itemize}
+
+\newpage
+\section{Pick-and-Place Task Performance}
+
+The system repeatedly performed the complete cycle:
+\[
+\text{detect egg} \rightarrow \text{move to egg} \rightarrow 
+\text{pick} \rightarrow \text{place in tray} \rightarrow \text{verify}
+\]
+
+A typical successful placement result is shown below:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/grasping-sequence-1.jpg}
+        \caption{Step 0}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/grasping-sequence-2.jpg}
+        \caption{Step 1}
+    \end{subfigure}
+    
+    \vspace{0.5cm} % 可选：调整上下两行之间的间距
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/grasping-sequence-3.jpg}
+        \caption{Step 2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/grasping-sequence-4.jpg}
+        \caption{Step 3}
+    \end{subfigure}
+\caption{Completed egg placement in a valid tray cell.}
+\end{figure}
+
+Overall, the system demonstrated reliable detection, accurate motion 
+execution, and robust verification.
+
+\chapter{Discussion}
+
+\section{Performance of the Vision System}
+
+The vision pipeline proved effective in segmenting the tray structure and 
+detecting individual eggs under varying lighting conditions. The 
+colour-based segmentation and circle-shape identification offered a good 
+balance between speed and robustness. The integration with the inverse 
+kinematics solver provided an additional layer of verification by 
+filtering out unreachable targets.
+
+A minor limitation is the sensitivity to shadows or strong highlights, 
+which can reduce segmentation accuracy in extreme conditions. However, 
+the overall detection quality is sufficient for the task requirements.
+
+\section{Movement Trajectory and Motion Smoothness}
+
+In the current system, all robot motions are executed using straight-line 
+trajectories interpolated directly in joint space. While this approach is 
+simple and effective for basic point-to-point movement, it does not take 
+into account the smoothness of torque output from the servo motors. 
+Because the servos must rapidly adjust to follow these linear transitions, 
+small jerks or abrupt changes in velocity may occur during the motion. 
+These effects become especially noticeable when the trajectory involves 
+large variations in joint angle.
+
+A more advanced trajectory planning method that incorporates velocity and 
+acceleration profiles—such as trapezoidal or polynomial time scaling—would 
+allow smoother motion and reduce mechanical stress on the servos. This 
+would contribute to more consistent positioning and improved overall 
+motion quality.
+
+\section{Robustness of the Vision System}
+
+The present vision pipeline performs reliably under normal lighting 
+conditions; however, its robustness decreases when subjected to small 
+perturbations such as shadows, highlights, or partial occlusions. These 
+factors may lead to intermittent misclassification or temporary detection 
+loss, affecting the continuity of the egg collection task.
+
+To enhance robustness, several improvements may be considered. These 
+include adding colour calibration, applying more noise-tolerant 
+segmentation techniques, or adopting machine-learning-based classifiers 
+that remain stable under varying visual disturbances. Such enhancements 
+would allow the system to maintain reliable detection performance even in 
+less controlled environments, enabling continuous and interruption-free 
+operation.
+
+Despite these limitations, the implemented system successfully 
+demonstrates a fully functional autonomous egg-handling workflow.
+
+\chapter{Conclusion}
+
+This coursework presented the design, implementation, and evaluation of 
+a complete autonomous egg detection and collection system based on a 
+5-bar planar parallel robot. The project combined computer vision, 
+trajectory planning, and real-time actuation within a unified MATLAB and 
+Arduino framework.
+
+The key achievements include:
+\begin{itemize}
+    \item reliable tray and egg detection in real time,
+    \item accurate identification of reachable compartments,
+    \item smooth joint-space control respecting kinematic constraints,
+    \item successful pick-and-place execution with verification,
+    \item and seamless integration of perception and control.
+\end{itemize}
+
+The results confirm that the system performs effectively under typical 
+experimental conditions and demonstrates the viability of using a simple 
+yet efficient vision-based framework for autonomous manipulation tasks. 
+The methods developed here form a foundation for future improvements, 
+including enhanced perception, more advanced trajectory planning, and 
+the addition of a physical end-effector.
+
+\clearpage
+\bibliography{references}
+
+% ============================================================
+\appendix
+\addtocontents{toc}{\protect\contentsline{chapter}{\textbf{APPENDICES}}{}{}}
+
+\chapter{Group Member Contribution and Peer Review}
+\begin{center}
+  \begin{minipage}{\textwidth}
+      \centering
+      \includepdf[pages=-,height=0.9\textheight]{figures/review-2.pdf}
+  \end{minipage}
+\end{center}
+
+\chapter{Code}
+
+% Configuration
+\section{Configuration}
+\lstinputlisting[
+    language=Matlab,
+    caption={robot.m},
+    label={lst:robot}
+]{../robot.m}
+
+% Forward Kinematics
+\section{Forward Kinematics}
+\lstinputlisting[
+    language=Matlab,
+    caption={ForwKin\_5link.m},
+    label={lst:fk}
+]{../ForwKin_5link.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={draw\_workspace.m},
+    label={lst:workspace}
+]{../draw_workspace.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={draw\_5link.m},
+    label={lst:drawlink}
+]{../draw_5link.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={tray\_key\_points.m},
+    label={lst:tray}
+]{../tray_key_points.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={main\_forwKin.m},
+    label={lst:main_fk}
+]{../main_forwKin.m}
+
+% Inverse Kinematics
+\section{Inverse Kinematics}
+\lstinputlisting[
+    language=Matlab,
+    caption={InvKin\_5link.m},
+    label={lst:ik}
+]{../InvKin_5link.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={InvKin\_trajectory.m},
+    label={lst:traj}
+]{../InvKin_trajectory.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={draw\_trajectory.m},
+    label={lst:draw_traj}
+]{../draw_trajectory.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={main\_invKin.m},
+    label={lst:main_ik}
+]{../main_invKin.m}
+
+
+\lstinputlisting[
+    language=Matlab,
+    caption={Egg.m},
+    label={lst:Egg}
+]{../Egg.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={EggCell.m},
+    label={lst:EggCell}
+]{../EggCell.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={ServoController.m},
+    label={lst:ServoController}
+]{../ServoController.m}
+
+\lstinputlisting[
+    language=Matlab,
+    caption={main\_eggHunter.m},
+    label={lst:main_eggHunter}
+]{../main_eggHunter.m}
+
+
+\end{document}

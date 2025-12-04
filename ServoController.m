@@ -58,7 +58,6 @@ classdef ServoController < handle
         end
 
         function delete(obj)
-            fprintf('清理舵机控制器资源 (引脚: %s)\n', obj.pin);
             obj.servoObj.disconnect();
             clear obj.arduinoConnections(obj.port);
         end
