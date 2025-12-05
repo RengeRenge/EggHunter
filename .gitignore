@@ -1,1 +1,14 @@
 cad/
+report/*.aux
+report/*.bbl
+report/*.asv
+report/*.blg
+report/*.out
+*.pdf
+report/*.toc
+report/*.synctex.gz
+report/*.fls
+report/*.log
+report/*.fdb_latexmk
+*.zip
+*.asv
